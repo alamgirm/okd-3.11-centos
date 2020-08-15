@@ -35,3 +35,6 @@ export INSTALL_METRICS=True
 
 # Enable "True"  only one of the VM 16GB memory. 
 export INSTALL_LOGGING=False
+
+# Disk device for docker thinpool
+export DISKDEV=""
