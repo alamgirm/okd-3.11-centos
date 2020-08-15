@@ -1,33 +1,21 @@
 
 
-
 # okd-installation-centos
 
 ![enter image description here](https://lh3.googleusercontent.com/OBGT85EIBjT43vxUsI0Pmhl68NmYxqOUbBuTjRivjP24t5r38ft0ioTNuEV0IAyV3izoadJsdYIlnw)
 
 # About...
-
   
 
-*This repository is used to create ***OKD 3.11 Cluster*** with **9** simple steps on ***Bare VM's****
- 
+*This repository is used to create ***OKD 3.11 Cluster*** with **9** simple steps on ***Bare VM's**** 
   
 
 # Table of Contents
 
-* [What are the pre-requisites ?](#prerequisites)
 * [What are the VM's provisioned ?](#configuration)
 * [How to deploy okd cluster ?](#deploy)
 * [How to access okd Console ?](#console)
 * [What are the addons provided ?](#addons)
-
-  
-  
-
-<a id="prerequisites"></a>
-
-# What are the prerequisites ?
-* [Git](https://git-scm.com/downloads "Git")
 
    
 <a id="configuration"></a>
@@ -35,19 +23,14 @@
 # What are the VM's provisioned ?
 
 ***Note: We are not going to create any VM's during this process. User is expected to have VM's before proceeding with this repository***
-
+We have three nodes: 1 master (for master+infra) and 2 workers (compute).
 *Below is the ***example configuration*** that we are going to refer ***through out this repository***.*
 
-*Name*|*IP*|*OS*|*RAM*|*CPU*|
-|----|----|----|----|----|
-*okd-master-node*    |*100.10.10.100*|*CentOS7*|*16GB*|*4*|
-*okd-worker-node-1* |*100.10.10.101*|*CentOS7*|*16GB*|*4*|
-*okd-worker-node-2* |*100.10.10.102*|*CentOS7*|*16GB*|*4*|
-*okd-worker-node-3* |*100.10.10.103*|*CentOS7*|*16GB*|*4*|
-*okd-infra-node-1*     |*100.10.10.104*|*CentOS7*|*16GB*|*4*|
-
-  
-  
+*Name*|*IP*|*OS*|*RAM*|*CPU*|*Disk*|
+|----|----|----|----|----|----|
+*master*  |*192.168.2.50*|*CentOS7*|*16GB*|*4*|*40GB*|
+*worker1* |*192.168.2.51*|*CentOS7*|*16GB*|*4*|*40+100GB*|
+*worker2* |*192.168.2.52*|*CentOS7*|*16GB*|*4*|*40+100GB*|
 
 <a id="deploy"></a>
 
@@ -58,27 +41,24 @@
  
 ***Update the system and host names for all nodes***
 
-* `100.10.10.100 (okd-master-node)`
-* `100.10.10.101 (okd-worker-node-1)`
-* `100.10.10.102 (okd-worker-node-2)`
-* `100.10.10.103 (okd-worker-node-3)`
-* `100.10.10.104 (okd-infra-node-1)`
+* `192.168.2.50 (master)`
+* `192.168.2.51 (worker1)`
+* `192.168.2.52 (worker2)`
+
   
 ***Unix Command!!!***
 
 `$ yum update -y`
 
-`$ nano /etc/hostname`  ***(OR)***   `$ nmtui`
+`$ nano /etc/hostname`  
 
 ## ***Step 2***
 
   ***Enable SELINUX=enforcing on all master/worker/infra nodes***
   
-* `100.10.10.100 (okd-master-node)`
-* `100.10.10.101 (okd-worker-node-1)`
-* `100.10.10.102 (okd-worker-node-2)`
-* `100.10.10.103 (okd-worker-node-3)`
-* `100.10.10.104 (okd-infra-node-1)`
+* `192.168.2.50 (master)`
+* `192.168.2.51 (worker1)`
+* `192.168.2.52 (worker2)`
 
 ***Unix Command!!!***
 
@@ -91,13 +71,11 @@
 
 ## ***Step 3***
 
-  ***Reboot all master/worker/infra nodes***
+  ***Reboot all master/worker nodes***
  
-* `100.10.10.100 (okd-master-node)`
-* `100.10.10.101 (okd-worker-node-1)`
-* `100.10.10.102 (okd-worker-node-2)`
-* `100.10.10.103 (okd-worker-node-3)`
-* `100.10.10.104 (okd-infra-node-1)`
+* `192.168.2.50 (master)`
+* `192.168.2.51 (worker1)`
+* `192.168.2.52 (worker2)`
  
 ***Unix Command!!!***
 
@@ -106,20 +84,15 @@
      
 ## ***Step 4***  
 
-*Checkout the code (git clone https://github.com/SubhakarKotta/okd-installation-centos.git)*
+*Checkout the code *
 
-***Configure okd-installation-centos/provisioning/settings.sh file***
-  ![enter image description here](https://lh3.googleusercontent.com/zbeRg_vHfpg0iG0w70E0u6T-PEfK8czIN7FywGoaTOyo-giHgYI8ABg7s8WQOINds4sFNDbvkWqyZQ)
 ## ***Step 5***  
 
 ***Copy "okd-installation-centos" folder to all master/worker nodes***
 
-  
-* `100.10.10.100 (okd-master-node)`
-* `100.10.10.101 (okd-worker-node-1)`
-* `100.10.10.102 (okd-worker-node-2)`
-* `100.10.10.103 (okd-worker-node-3)`
-* `100.10.10.104 (okd-infra-node-1)`
+* `192.168.2.50 (master)`
+* `192.168.2.51 (worker1)`
+* `192.168.2.52 (worker2)`
 
 *Example copy to root folder and execution permissions can be applied by executing the below command.*
  
@@ -131,13 +104,11 @@
 
 ## ***Step 6***
 
-***Execute the below script on all master/worker/infra nodes***
+***Execute the below script on all master/worker nodes***
 
-* `100.10.10.100 (okd-master-node)`
-* `100.10.10.101 (okd-worker-node-1)`
-* `100.10.10.102 (okd-worker-node-2)`
-* `100.10.10.103 (okd-worker-node-3)`
-* `100.10.10.104 (okd-infra-node-1)`
+* `192.168.2.50 (master)`
+* `192.168.2.51 (worker1)`
+* `192.168.2.52 (worker2)`
 
 ***Unix Command!!!***
 
@@ -157,21 +128,8 @@
 ***okd-master-node***
 
 `$ cat ~/.ssh/id_rsa.pub | ssh   root@100.10.10.100  "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"`
-
-***okd-worker-node-1***
-
 `$ cat ~/.ssh/id_rsa.pub | ssh   root@100.10.10.101  "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"`
-
-***okd-worker-node-2***
-
 `$ cat ~/.ssh/id_rsa.pub | ssh   root@100.10.10.102  "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"`
-
-***okd-worker-node-3***
-
-`$ cat ~/.ssh/id_rsa.pub | ssh   root@100.10.10.103  "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"`
-
-***okd-infra-node-4***
-
 `$ cat ~/.ssh/id_rsa.pub | ssh   root@100.10.10.104  "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"`
 
 ## ***Step 8***
