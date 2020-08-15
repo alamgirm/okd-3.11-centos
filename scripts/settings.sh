@@ -6,15 +6,15 @@
 export OKD_VERSION=3.11
 
 # OKD Master Node Configuration
-export OKD_MASTER_IP=192.168.2.50
+export OKD_MASTER_IP=192.168.2.51
 export OKD_MASTER_HOSTNAME=master
 
 # OKD Worker Node 1 Configuration
-export OKD_WORKER_NODE_1_IP=192.168.2.51
+export OKD_WORKER_NODE_1_IP=192.168.2.52
 export OKD_WORKER_NODE_1_HOSTNAME=worker1
 
 # OKD Worker Node 2 Configuration
-export OKD_WORKER_NODE_2_IP=192.168.2.52
+export OKD_WORKER_NODE_2_IP=192.168.2.53
 export OKD_WORKER_NODE_2_HOSTNAME=worker2
 
 # The  below setting will be used to access OKD console https://console.$DOMAIN:$API_PORT"
