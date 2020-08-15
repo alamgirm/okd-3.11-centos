@@ -9,6 +9,9 @@ yum -y --enablerepo=epel install ansible pyOpenSSL
 curl -o ansible.rpm https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.6.5-1.el7.ans.noarch.rpm
 yum -y --enablerepo=epel install ansible.rpm
 
+# see if ansible can reach each node without asking for password
+ansible all -m ping
+
 # checkout openshift-ansible repository
 [ ! -d openshift-ansible ] && git clone https://github.com/openshift/openshift-ansible.git
 cd openshift-ansible && git fetch && git checkout release-${OKD_VERSION} && cd ..
