@@ -6,6 +6,11 @@ CERT=/etc/letsencrypt/live/${DOMAIN}/fullchain.pem
 CA_CERT=/etc/letsencrypt/live/${DOMAIN}/chain.pem
 PRV_KEY=/etc/letsencrypt/live/${DOMAIN}/privkey.pem
 
+if [[ ! -f "$CERT" || ! -f "$CA_CERT" || ! -f "$PRV_KEY" ]]; then
+  echo "Some of the certificate/key files are missing."
+  exit 1
+fi
+
 cat << EOF > inventory.ini
 
 [OSEv3:children]
