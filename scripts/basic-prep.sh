@@ -33,15 +33,14 @@ if [ -z $DISKDEV ]; then
 else
 	cp /etc/sysconfig/docker-storage-setup /etc/sysconfig/docker-storage-setup.bk
 
-	echo DEVS=$DISKDEV > /etc/sysconfig/docker-storage-setup
-	echo VG=DOCKER >> /etc/sysconfig/docker-storage-setup
+	pvcreate $DISKDEV
+        vgcreate docker-vg $DISKDEV
+	
+	echo VG=docker-vg > /etc/sysconfig/docker-storage-setup
 	echo SETUP_LVM_THIN_POOL=yes >> /etc/sysconfig/docker-storage-setup
 	echo DATA_SIZE="100%FREE" >> /etc/sysconfig/docker-storage-setup
-
 	systemctl stop docker
-
 	rm -rf /var/lib/docker
-	wipefs --all $DISK
 	docker-storage-setup
 fi
  
