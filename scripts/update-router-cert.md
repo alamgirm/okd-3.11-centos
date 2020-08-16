@@ -19,7 +19,7 @@ Based on https://docs.openshift.com/container-platform/3.3/install_config/redepl
    Get a copy of your private key: 
    ```
    cp /etc/letsencrypt/live/caas.knowbiz.ca/privkey.pem  router.key
-   ``
+   ```
    
  - Step 4:
    Create the secret:
