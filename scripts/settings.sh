@@ -21,6 +21,7 @@ export OKD_WORKER_NODE_2_HOSTNAME=worker2
 # By default we can login using the URL https://console.caas.knowbiz.ca:8443
 # To access URL from your local system we need to configure master host in C:\Windows\System32\drivers\etc\hosts file as below
 # 192.168.2.50  console.caas.knowbiz.ca
+export MAIL=alamgir99@gmail.com
 export DOMAIN=caas.knowbiz.ca
 export API_PORT=8443
 
