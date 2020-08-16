@@ -1,5 +1,5 @@
 #!/bin/bash
-# Basic preparation, run on each of the nodes both master and worker
+# Basic preparation, run on each of the nodes, both master/infra and worker
 
 source settings.sh
 
@@ -24,24 +24,29 @@ sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
 
 systemctl | grep "NetworkManager.*running"
 if [ $? -eq 1 ]; then
-        systemctl start NetworkManager
-        systemctl enable NetworkManager
+  systemctl start NetworkManager
+  systemctl enable NetworkManager
 fi
 
 if [ -z $DISKDEV ]; then
-	echo "Not setting the Docker storage."
+  echo "Not setting the Docker storage."
 else
-	cp /etc/sysconfig/docker-storage-setup /etc/sysconfig/docker-storage-setup.bk
+  cat /etc/sysconfig/docker-storage-setup | grep "VG=docker-vg"
+  if [[ "$?" == "0" ]]; then 
+    echo "Docker volume already set."
+  else
+    echo "Setting up docker volume."
+    cp /etc/sysconfig/docker-storage-setup /etc/sysconfig/docker-storage-setup.bk
+    pvcreate $DISKDEV
+    vgcreate docker-vg $DISKDEV
+    echo VG=docker-vg > /etc/sysconfig/docker-storage-setup
+    echo SETUP_LVM_THIN_POOL=yes >> /etc/sysconfig/docker-storage-setup
+    echo DATA_SIZE="100%FREE" >> /etc/sysconfig/docker-storage-setup
+    systemctl stop docker
 
-	pvcreate $DISKDEV
-        vgcreate docker-vg $DISKDEV
-	
-	echo VG=docker-vg > /etc/sysconfig/docker-storage-setup
-	echo SETUP_LVM_THIN_POOL=yes >> /etc/sysconfig/docker-storage-setup
-	echo DATA_SIZE="100%FREE" >> /etc/sysconfig/docker-storage-setup
-	systemctl stop docker
-	rm -rf /var/lib/docker
-	docker-storage-setup
+    rm -rf /var/lib/docker
+    docker-storage-setup
+  fi
 fi
  
 systemctl restart docker
