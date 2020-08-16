@@ -37,4 +37,4 @@ export INSTALL_METRICS=True
 export INSTALL_LOGGING=False
 
 # Disk device for docker thinpool
-export DISKDEV=""
+export DISKDEV="/dev/sda4"
