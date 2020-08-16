@@ -4,6 +4,11 @@
 
 source settings.sh
 
+ssh-keygen -t rsa
+cat ~/.ssh/id_rsa.pub | ssh root@${OKD_MASTER_IP} "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+cat ~/.ssh/id_rsa.pub | ssh root@${OKD_WORKER_NODE_1_IP} "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+cat ~/.ssh/id_rsa.pub | ssh root@${OKD_WORKER_NODE_2_IP} "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+
 # install the packages for Ansible
 yum -y --enablerepo=epel install ansible pyOpenSSL
 curl -o ansible.rpm https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.6.5-1.el7.ans.noarch.rpm
@@ -39,4 +44,4 @@ echo "*"
 echo "$ oc login -u ${OKD_USERNAME} -p ${OKD_PASSWORD} https://console.$DOMAIN:$API_PORT/"
 echo "#####################################################################"
 
-oc login -u ${OKD_USERNAME} -p ${OKD_PASSWORD} https://console.$DOMAIN:$API_PORT/
+#oc login -u ${OKD_USERNAME} -p ${OKD_PASSWORD} https://console.$DOMAIN:$API_PORT/
