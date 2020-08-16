@@ -11,8 +11,8 @@ Based on https://docs.openshift.com/container-platform/3.3/install_config/redepl
 - Step 2:
   Combine your certificate, ca certificate AND the private key to a single file: 
   ```
-  cat /etc/letsencrypt/live/caas.knowbiz.ca/fullchain.pem /etc/letsencrypt/live/caas.knowbiz.ca/privkey.pem > router.pem`
-  ``
+  cat /etc/letsencrypt/live/caas.knowbiz.ca/fullchain.pem /etc/letsencrypt/live/caas.knowbiz.ca/privkey.pem > router.pem
+  ```
   Since full chanin has both the cert and ca cert, I can just combine the fullchain and private key.
   
  - Step 3: 
