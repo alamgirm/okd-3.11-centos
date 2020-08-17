@@ -1,12 +1,13 @@
 #!/bin/bash
 
 source settings.sh
-
-ssh-keygen -t rsa
+if [[ ! -f ~/.ssh/id_rsa.pub ]]; then
+  ssh-keygen -t rsa
+fi
 cat ~/.ssh/id_rsa.pub | ssh root@${OKD_MASTER_IP} "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
 cat ~/.ssh/id_rsa.pub | ssh root@${OKD_WORKER_NODE_1_IP} "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
 cat ~/.ssh/id_rsa.pub | ssh root@${OKD_WORKER_NODE_2_IP} "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
-cat ~/.ssh/id_rsa.pub | ssh root@$181.215.182.160 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+#cat ~/.ssh/id_rsa.pub | ssh root@$181.215.182.160 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
 
 CERT=/etc/letsencrypt/live/${DOMAIN}/fullchain.pem
 CA_CERT=/etc/letsencrypt/live/${DOMAIN}/chain.pem
@@ -93,9 +94,9 @@ openshift_master_overwrite_named_certificates=true
 openshift_master_cluster_hostname=console-internal.${DOMAIN}
 openshift_master_cluster_public_hostname=console.${DOMAIN}
 openshift_master_named_certificates=[{"certfile": "$CERT", "keyfile": "$PRV_KEY", "cafile": "$CA_CERT", "names": ["console.${DOMAIN}"]}]
-openshift_hosted_router_certificate={"certfile": "$CERT", "keyfile": "$PRV_KEY", "cafile": "$CA_CERT"}
-openshift_hosted_registry_routehost=registry.apps.${DOMAIN}
-openshift_hosted_registry_routecertificates={"certfile": "$CERT", "keyfile": "$PRV_KEY", "cafile": "$CA_CERT"}
-openshift_hosted_registry_routetermination=reencrypt
+#openshift_hosted_router_certificate={"certfile": "$CERT", "keyfile": "$PRV_KEY", "cafile": "$CA_CERT"}
+#openshift_hosted_registry_routehost=registry.apps.${DOMAIN}
+#openshift_hosted_registry_routecertificates={"certfile": "$CERT", "keyfile": "$PRV_KEY", "cafile": "$CA_CERT"}
+#openshift_hosted_registry_routetermination=reencrypt
 
 EOF
