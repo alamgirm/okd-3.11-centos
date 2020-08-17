@@ -17,22 +17,21 @@ if [[ ! -f "$CERT" || ! -f "$CA_CERT" || ! -f "$PRV_KEY" ]]; then
   echo "Some of the certificate/key files are missing. Trying to create them..."
   echo "Allow port 80 on your network router and NAT to the master node $OKD_MASTER_IP."
   # Install CertBot
-	yum install --enablerepo=epel -y certbot
+  yum install --enablerepo=epel -y certbot
   # Configure Let's Encrypt certificate
-	certbot certonly --manual \
-	  --preferred-challenges dns \
-		--email $MAIL \
-		--server https://acme-v02.api.letsencrypt.org/directory \
-		--agree-tos \
-		-d $DOMAIN \
-		-d *.$DOMAIN \
-		-d *.apps.$DOMAIN
+  certbot certonly --manual \
+   --preferred-challenges dns \
+   --email $MAIL \
+   --server https://acme-v02.api.letsencrypt.org/directory \
+   --agree-tos \
+   -d $DOMAIN \
+   -d *.$DOMAIN \
+   -d *.apps.$DOMAIN
         
   # Add Cron Task to renew certificate
-	echo "@weekly  certbot renew --pre-hook=\"oc scale --replicas=0 dc router\" --post-hook=\"oc scale --replicas=1 dc router\"" > certbotcron
-	crontab certbotcron
-	rm certbotcron
-  exit 1
+  #echo "@weekly  certbot renew --pre-hook=\"oc scale --replicas=0 dc router\" --post-hook=\"oc scale --replicas=1 dc router\"" > certbotcron
+  #crontab certbotcron
+  #rm certbotcron
 fi
 
 cat << EOF > inventory.ini
