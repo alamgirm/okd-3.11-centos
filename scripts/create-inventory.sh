@@ -94,9 +94,9 @@ openshift_master_overwrite_named_certificates=true
 openshift_master_cluster_hostname=console-internal.${DOMAIN}
 openshift_master_cluster_public_hostname=console.${DOMAIN}
 openshift_master_named_certificates=[{"certfile": "$CERT", "keyfile": "$PRV_KEY", "cafile": "$CA_CERT", "names": ["console.${DOMAIN}"]}]
+
+EOF
 #openshift_hosted_router_certificate={"certfile": "$CERT", "keyfile": "$PRV_KEY", "cafile": "$CA_CERT"}
 #openshift_hosted_registry_routehost=registry.apps.${DOMAIN}
 #openshift_hosted_registry_routecertificates={"certfile": "$CERT", "keyfile": "$PRV_KEY", "cafile": "$CA_CERT"}
 #openshift_hosted_registry_routetermination=reencrypt
-
-EOF
