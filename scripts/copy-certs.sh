@@ -6,7 +6,7 @@ if [[ ! -f ~/.ssh/id_rsa.pub ]]; then
   ssh-keygen -t rsa
 fi
 
-ssh-copy-id root@$181.215.182.160
+#ssh-copy-id root@$181.215.182.160
 
 mkdir -p /etc/letsencrypt/live/${DOMAIN}
 
