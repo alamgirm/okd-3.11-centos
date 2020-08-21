@@ -1,13 +1,6 @@
 #!/bin/bash
 
 source settings.sh
-if [[ ! -f ~/.ssh/id_rsa.pub ]]; then
-  ssh-keygen -t rsa
-fi
-cat ~/.ssh/id_rsa.pub | ssh root@${OKD_MASTER_IP} "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
-cat ~/.ssh/id_rsa.pub | ssh root@${OKD_WORKER_NODE_1_IP} "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
-cat ~/.ssh/id_rsa.pub | ssh root@${OKD_WORKER_NODE_2_IP} "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
-#cat ~/.ssh/id_rsa.pub | ssh root@$181.215.182.160 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
 
 CERT=/etc/letsencrypt/live/${DOMAIN}/fullchain.pem
 CA_CERT=/etc/letsencrypt/live/${DOMAIN}/chain.pem
