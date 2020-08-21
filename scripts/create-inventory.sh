@@ -7,24 +7,8 @@ CA_CERT=/etc/letsencrypt/live/${DOMAIN}/chain.pem
 PRV_KEY=/etc/letsencrypt/live/${DOMAIN}/privkey.pem
 
 if [[ ! -f "$CERT" || ! -f "$CA_CERT" || ! -f "$PRV_KEY" ]]; then
-  echo "Some of the certificate/key files are missing. Trying to create them..."
-  echo "Allow port 80 on your network router and NAT to the master node $OKD_MASTER_IP."
-  # Install CertBot
-  yum install --enablerepo=epel -y certbot
-  # Configure Let's Encrypt certificate
-  certbot certonly --manual \
-   --preferred-challenges dns \
-   --email $MAIL \
-   --server https://acme-v02.api.letsencrypt.org/directory \
-   --agree-tos \
-   -d $DOMAIN \
-   -d *.$DOMAIN \
-   -d *.apps.$DOMAIN
-        
-  # Add Cron Task to renew certificate
-  #echo "@weekly  certbot renew --pre-hook=\"oc scale --replicas=0 dc router\" --post-hook=\"oc scale --replicas=1 dc router\"" > certbotcron
-  #crontab certbotcron
-  #rm certbotcron
+   echo "Certs not found"
+   exit 1
 fi
 
 cat << EOF > inventory.ini
@@ -83,12 +67,12 @@ openshift_master_console_port=${API_PORT}
 
 
 openshift_master_overwrite_named_certificates=true
-openshift_master_cluster_hostname=console-internal.${DOMAIN}
+openshift_master_cluster_hostname=console-int.${DOMAIN}
 openshift_master_cluster_public_hostname=console.${DOMAIN}
 openshift_master_named_certificates=[{"certfile": "$CERT", "keyfile": "$PRV_KEY", "cafile": "$CA_CERT", "names": ["console.${DOMAIN}"]}]
 
+openshift_hosted_router_certificate={"certfile": "$CERT", "keyfile": "$PRV_KEY", "cafile": "$CA_CERT"}
+openshift_hosted_registry_routehost=registry.apps.${DOMAIN}
+openshift_hosted_registry_routecertificates={"certfile": "$CERT", "keyfile": "$PRV_KEY", "cafile": "$CA_CERT"}
+openshift_hosted_registry_routetermination=reencrypt
 EOF
-#openshift_hosted_router_certificate={"certfile": "$CERT", "keyfile": "$PRV_KEY", "cafile": "$CA_CERT"}
-#openshift_hosted_registry_routehost=registry.apps.${DOMAIN}
-#openshift_hosted_registry_routecertificates={"certfile": "$CERT", "keyfile": "$PRV_KEY", "cafile": "$CA_CERT"}
-#openshift_hosted_registry_routetermination=reencrypt
